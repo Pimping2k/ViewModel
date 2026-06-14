@@ -13,16 +13,20 @@ public abstract class BaseView<TModel> : BaseView where TModel : class
     {
         Model = model;
         gameObject.SetActive(true);
-        
+
         OnShown();
         Refresh();
     }
 
     public override void Hide()
     {
-            OnHidden();
+        if(Model == null)
+            return;
+        
+        OnHidden();
         Model = null;
         base.Hide();
+        gameObject.SetActive(false);
     }
 
     protected abstract void OnShown();
