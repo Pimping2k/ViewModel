@@ -1,18 +1,19 @@
 ﻿using System;
+using Additions;
 
 namespace Models
 {
-    public class HealthModel
+    public class HealthModel : IObservableData
     {
         public float Health { get; private set; }
         public float MaxHealth { get; private set; }
 
-        public event Action HealthChanged;
+        public event Action Changed;
 
         public void ChangeHealth(float newHealth)
         {
             Health = newHealth;
-            HealthChanged?.Invoke();
+            Changed?.Invoke();
         }
         
         public HealthModel(float health, float maxHealth)
