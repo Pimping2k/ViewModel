@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SubViews
 {
-    public class ScoreSubView : HudSubView<ScoreModel>
+    public class ScoreSubView : BaseHudSubView<ScoreModel>
     {
         [SerializeField] private TMP_Text _scoreText;
 

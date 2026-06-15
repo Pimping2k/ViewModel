@@ -7,9 +7,9 @@ namespace Views
 {
     public class HudView : BaseView<HudModel>
     {
-        [SerializeField] private List<HudSubView> _subViews;
+        [SerializeField] private List<BaseHudSubView> _subViews;
 
-        private readonly Dictionary<Type, HudSubView> _subViewsMap = new();
+        private readonly Dictionary<Type, BaseHudSubView> _subViewsMap = new();
 
         private void Awake()
         {

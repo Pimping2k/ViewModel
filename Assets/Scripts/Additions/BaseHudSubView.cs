@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Additions
 {
-    public abstract class HudSubView : MonoBehaviour
+    public abstract class BaseHudSubView : MonoBehaviour
     {
         public abstract Type ModelType { get; }
 

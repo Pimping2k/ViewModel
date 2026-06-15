@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SubViews
 {
-    public class ManaSubView : HudSubView<ManaModel>
+    public class ManaSubView : BaseHudSubView<ManaModel>
     {
         [SerializeField] private TMP_Text _manaText;
 

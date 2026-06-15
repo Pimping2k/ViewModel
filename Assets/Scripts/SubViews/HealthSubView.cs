@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SubViews
 {
-    public class HealthSubView : HudSubView<HealthModel>
+    public class HealthSubView : BaseHudSubView<HealthModel>
     {
         [SerializeField] private TMP_Text _healthText;
 

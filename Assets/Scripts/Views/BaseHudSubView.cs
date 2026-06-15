@@ -1,7 +1,7 @@
 ﻿using System;
 using Additions;
 
-public abstract class HudSubView<TModel> : HudSubView where TModel : class, IObservableData
+public abstract class BaseHudSubView<TModel> : BaseHudSubView where TModel : class, IObservableData
 {
     public override Type ModelType => typeof(TModel);
         
