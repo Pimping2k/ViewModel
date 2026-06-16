@@ -6,7 +6,8 @@ public class ViewManager : MonoBehaviour
 {
     [SerializeField] private List<BaseView> _views;
     private ViewContainer _viewContainer;
-
+    private BaseView _currentView;
+    
     private void Awake()
     {
         _viewContainer = new ViewContainer();
@@ -20,8 +21,15 @@ public class ViewManager : MonoBehaviour
 
     public void ShowView<TView, TModel>(TModel model) where TView : BaseView<TModel> where TModel : class
     {
-        var view = _viewContainer.Get<TView>();
-        view.Show(model);
+        _currentView?.Hide();
+        _currentView = _viewContainer.Get<TView>();;
+        _currentView.Show(model);
+    }
+
+    public void HideCurrentView()
+    {
+        _currentView?.Hide();
+        _currentView = null;
     }
 
     public void HideView<TView>() where TView : BaseView
