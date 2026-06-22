@@ -5,36 +5,41 @@ using UnityEngine;
 public class ViewManager : MonoBehaviour
 {
     [SerializeField] private List<BaseView> _views;
-    private ViewContainer _viewContainer;
+        
+    private readonly Dictionary<Type, BaseView> _viewMap = new();
     private BaseView _currentView;
-    
+
     private void Awake()
     {
-        _viewContainer = new ViewContainer();
-        
         foreach (var view in _views)
         {
-            _viewContainer.Register(view);
+            if (!view) 
+                continue;
+                
+            _viewMap[view.GetType()] = view;
+                
+            view.Initialize(this);
             view.Hide();
         }
     }
 
-    public void ShowView<TView, TModel>(TModel model) where TView : BaseView<TModel> where TModel : class
+    public TView ShowView<TView>() where TView : BaseView
     {
         _currentView?.Hide();
-        _currentView = _viewContainer.Get<TView>();;
-        _currentView.Show(model);
+
+        if (_viewMap.TryGetValue(typeof(TView), out var view))
+        {
+            _currentView = view;
+            _currentView.Show();
+            return view as TView;
+        }
+
+        return null;
     }
 
     public void HideCurrentView()
     {
         _currentView?.Hide();
         _currentView = null;
-    }
-
-    public void HideView<TView>() where TView : BaseView
-    {
-        var view = _viewContainer.Get<TView>();
-        view.Hide();
     }
 }

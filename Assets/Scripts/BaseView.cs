@@ -1,35 +1,64 @@
+﻿using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public abstract class BaseView : MonoBehaviour
+public class BaseView : MonoBehaviour, IView, IDisposable
 {
-    public virtual void Hide() => gameObject.SetActive(false);
-}
-
-public abstract class BaseView<TModel> : BaseView where TModel : class
-{
-    protected TModel Model { get; private set; }
-
-    public void Show(TModel model)
+    [SerializeField] private bool _closeWithBackButton;
+    
+    protected ViewManager ViewManager;
+    protected InputSystem_Actions InputSystem;
+    
+    private void Awake()
     {
-        Model = model;
-        gameObject.SetActive(true);
-
-        OnShown();
-        Refresh();
+        if (_closeWithBackButton)
+        {
+            InputSystem = new InputSystem_Actions();
+            InputSystem.Enable();
+            InputSystem.UI.Cancel.performed += OnCancelClicked;
+        }
     }
 
-    public override void Hide()
+    private void OnDestroy()
     {
-        if(Model == null)
-            return;
-        
-        OnHidden();
-        Model = null;
-        base.Hide();
+        if (_closeWithBackButton)
+        {
+            InputSystem.UI.Cancel.performed -= OnCancelClicked;
+        }
+    }
+
+    public virtual void Initialize(ViewManager viewManager)
+    {
+        ViewManager = viewManager;
+        OnInitialized();
+    }
+
+    public virtual void Show()
+    {
+        gameObject.SetActive(true);
+        OnShown();
+    }
+
+    public virtual void Hide()
+    {
+        OnHide();
         gameObject.SetActive(false);
     }
 
-    protected abstract void OnShown();
-    protected abstract void OnHidden();
-    public abstract void Refresh();
+    public void Dispose()
+    {
+        OnDisposed();
+    }
+
+    protected virtual void OnDisposed(){}
+    protected virtual void OnInitialized() { }
+    protected virtual void OnShown() { }
+    protected virtual void OnHide() { }
+
+    private void OnCancelClicked(InputAction.CallbackContext obj)
+    {
+        ViewManager.HideCurrentView();
+    }
 }
+
+public abstract class BaseView<TView> : BaseView where TView : BaseView<TView> { }
