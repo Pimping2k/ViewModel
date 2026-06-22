@@ -11,6 +11,9 @@ namespace DefaultNamespace
         {
             if(Input.GetKeyDown(KeyCode.Escape))
                 _viewManager.ShowView<UIMainMenuView>();
+            
+            if(Input.GetKeyDown(KeyCode.I))
+                _viewManager.ShowView<UIInventoryView>();
         }
     }
 }
